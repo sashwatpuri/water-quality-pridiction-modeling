@@ -9,7 +9,7 @@ app = Flask(__name__, static_folder='.')
 CORS(app)  # Allow frontend requests from any origin
 
 # Load the trained Random Forest model
-MODEL_PATH = "Best_Water_RandomForest_Model.pkl"
+MODEL_PATH = "Optimized_Water_XGBoost_Model.pkl"
 try:
     model = joblib.load(MODEL_PATH)
     print(f"✅ Model loaded successfully from {MODEL_PATH}")
