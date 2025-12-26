@@ -5,7 +5,7 @@ import joblib
 import pandas as pd
 
 # Load cleaned dataset
-data = pd.read_csv("water_potability_cleaned.csv")
+data = pd.read_csv("water_potability.csv")
 X = data.drop("Potability", axis=1)
 y = data["Potability"]
 
