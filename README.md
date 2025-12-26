@@ -1,232 +1,156 @@
-# 💧 AquaSense - IoT Water Quality Prediction System
+# 🌊 AquaSense – AI & IoT-Based Water Quality Management System
 
-A comprehensive AI-powered system for monitoring and predicting water potability using Machine Learning and IoT integration. This project combines a Flask backend API with an interactive web dashboard to analyze 9 water quality parameters and provide detailed health risk assessments.
+An end-to-end **AI and IoT-driven water quality analysis system** designed to evaluate water potability, assess risk levels, map potential health impacts, and recommend corrective actions using real-time and manual water parameter inputs.
 
-## 🚀 Features
+This project combines **machine learning model comparison**, **handling of imbalanced data**, **IoT integration via ThingSpeak**, and an **interactive dashboard** to deliver explainable and actionable water quality intelligence.
 
-- **Multi-Parameter Analysis**: Analyzes 9 critical water quality parameters (pH, Hardness, Solids, Chloramines, Sulfate, Conductivity, Organic Carbon, Trihalomethanes, Turbidity)
-- **Machine Learning Model**: Random Forest classifier trained on comprehensive water quality dataset
-- **Real-time Predictions**: Instant potability predictions with confidence scores
-- **Detailed Risk Assessment**: Parameter-specific health risks and recommended actions for each value
-- **IoT Integration**: Fetches real-time data from ThingSpeak IoT channels
-- **Interactive Dashboard**: User-friendly web interface with parameter input and visual analysis
-- **Actionable Recommendations**: Specific, numbered action steps to improve water quality
-- **Data Visualization**: Dynamic charts tracking water quality trends over time
-- **Export Functionality**: Download analysis reports as CSV files
+---
 
-## 🛠️ Tech Stack
+## 📌 Project Motivation
 
-- **Backend**: Python 3.x, Flask, Flask-CORS
-- **Machine Learning**: Scikit-learn (Random Forest), Pandas, NumPy, Joblib
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla), Chart.js
-- **IoT Platform**: ThingSpeak API
-- **Notebook**: Jupyter Notebook (Model.ipynb)
+Access to safe drinking water is a critical public health requirement. Manual water testing methods are often slow, non-predictive, and reactive. AquaSense addresses this gap by providing:
+
+* Real-time water quality monitoring
+* AI-based potability prediction
+* Risk categorisation with health awareness
+* Actionable recommendations for water treatment
+
+---
+
+## 🎯 Key Objectives
+
+* Predict **Drinkable / Not Drinkable** water using ML
+* Perform **comparative analysis** of multiple ML models
+* Handle **class imbalance** using SMOTE
+* Integrate **real-time IoT data** from ThingSpeak
+* Provide **risk-based disease mapping** (rule-based)
+* Recommend **parameter-wise corrective actions**
+* Visualise insights through a dashboard
+
+---
+
+## 🧠 Machine Learning Models Used
+
+A comparative study was performed using the following models:
+
+* **K-Nearest Neighbours (KNN)** – distance-based baseline model
+* **Decision Tree** – interpretable rule-based classifier
+* **Random Forest** – ensemble model with reduced overfitting
+* **Gradient Boosting** – a sequential ensemble learning model
+
+📌 **Random Forest** achieved the best overall performance (especially F1-score) and was selected for deployment.
+
+---
+
+## ⚙️ Data Processing Pipeline
+
+1. Dataset loading (`water_potability.csv`)
+2. Missing value handling
+3. Feature scaling
+4. Train–test split
+5. SMOTE is applied **only to the training data**
+6. Model training & evaluation
+7. Model serialisation (`.pkl`)
+
+⚠️ The test dataset is kept completely untouched to prevent data leakage.
+
+---
+
+## 🌐 IoT Integration
+
+* Real-time water quality values fetched using **ThingSpeak API**
+* Uses:
+
+  * Channel ID
+  * Read API Key
+* Supports:
+
+  * Live sensor-based inputs
+  * Manual user input via the dashboard
+
+---
+
+## 📊 Dashboard Capabilities
+
+* Real-time water quality prediction
+* Parameter-wise status classification:
+
+  * Safe
+  * Near Optimal
+  * Medium Risk
+  * High Risk
+* Disease association based on unsafe parameters
+* Clear maintenance and treatment recommendations
+
+🧠 Disease mapping is **rule-based**, derived from water quality standards and domain knowledge — not ML prediction.
+
+---
 
 ## 📂 Project Structure
 
 ```
 ET201/
-├── app.py                           # Flask backend API server
-├── dashboard.html                   # Main interactive dashboard (in Websites/)
-├── Model.ipynb                      # Jupyter notebook for model exploration
-├── water_potability.csv             # Dataset for model training
-├── README.md                        # Project documentation
+│
+├── Data/
+│   └── water_potability.csv          # Dataset
 │
 ├── Models/
-│   └── RandomForest_Model.pkl       # Trained Random Forest model
+│   └── RandomForest_M1.pkl           # Best performing trained model
+│
+├── Notebooks/
+│   └── Water_System.ipynb            # EDA + model comparison
 │
 ├── Training_Models/
-│   ├── train_model.py              # Initial model training script
-│   ├── train_model2.py             # Optimized training version
-│   └── train_model3.py             # Final model training version
+│   ├── train_model.py                # Model training script 1
+│   ├── train_model2.py               # Model training script 2
+│   └── train_model3.py               # Model training script 3
 │
-└── Websites/
-    ├── dashboard.html              # Main water analyzer dashboard
-    ├── index.html                  # Login/registration page
-    └── website.html                # Additional web resources
+├── app.py                            # Backend logic / model inference
+├── dashboard.html                   # Dashboard UI
+├── README.md                        # Project documentation
 ```
 
-## ⚙️ Installation & Setup
+---
 
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package installer)
-- Modern web browser (Chrome, Firefox, Edge, Safari)
+## 🛠️ Tech Stack
 
-### 1. Clone/Download the Project
-```bash
-git clone <repository-url>
-cd ET201
-```
+* **Programming:** Python
+* **ML Libraries:** scikit-learn, imbalanced-learn (SMOTE)
+* **Data Handling:** Pandas, NumPy
+* **Visualisation:** Matplotlib, Seaborn
+* **IoT Platform:** ThingSpeak
+* **Frontend:** HTML / Dashboard UI
 
-### 2. Install Dependencies
-```bash
-pip install flask flask-cors pandas numpy scikit-learn joblib
-```
+---
 
-### 3. Train/Update the Model (Optional)
-To retrain the Random Forest model:
-```bash
-python Training_Models/train_model3.py
-```
-This generates the `Models/RandomForest_Model.pkl` file.
+## 🚀 How to Run the Project
 
-### 4. Run the Backend Server
-Start the Flask API:
-```bash
-python app.py
-```
-The server will start at `http://localhost:5000` and automatically load the trained model.
+1. Clone the repository
+2. Install dependencies
+3. Run model training scripts (optional)
+4. Start the application
+5. Open `dashboard.html` in browser
 
-```
-✅ Model loaded successfully from [path]/RandomForest_Model.pkl
-🌊 Water Quality Prediction API
-API Endpoint: http://localhost:5000/api/predict
-Status Check: http://localhost:5000/api/status
-```
+---
 
-### 5. Launch the Dashboard
-Open the web dashboard in your browser:
-- **Option A**: Open `Websites/dashboard.html` directly in your browser
-- **Option B**: Use VS Code Live Server for better performance
-- **Option C**: Run a simple HTTP server:
-  ```bash
-  python -m http.server 8000
-  # Then visit http://localhost:8000/Websites/dashboard.html
-  ```
+## 🔮 Future Enhancements
 
-## 🖥️ Usage Guide
+* Time-series forecasting of water quality trends
+* Multi-class risk prediction
+* Cloud deployment
+* Automated alert system
+* Mobile application integration
 
-### Dashboard Features
+---
 
-1. **User Authentication**
-   - Login or register to access the dashboard
-   - Store your ThingSpeak API credentials for easy IoT integration
+## 📌 Conclusion
 
-2. **Water Analysis**
-   - **Manual Input**: Enter all 9 water quality parameters
-   - **Sample Data**: Click "Load Sample Data" to auto-fill with realistic test values
-   - **IoT Integration**: Load real-time data directly from ThingSpeak
+AquaSense demonstrates the effective integration of **machine learning, IoT, and domain knowledge** to build a reliable, explainable, and real-time water quality management system. The project emphasises not only prediction accuracy but also **interpretability and actionable intelligence**, making it suitable for real-world deployment.
 
-3. **Parameter Analysis**
-   - **Safe Range Display**: See optimal and current values for each parameter
-   - **Risk Assessment**: Color-coded indicators (Green=Safe, Orange=Medium, Red=High)
-   - **Specific Recommendations**: Numbered action steps tailored to your water condition
-   - **Health Risks**: Detailed warnings about potential health impacts
+---
 
-4. **Results Interpretation**
-   - Overall potability verdict (Potable/Not Potable)
-   - Model confidence score (0-100%)
-   - Parameter-by-parameter breakdown with recommendations
-   - Health risk warnings when applicable
+## 👤 Author
 
-5. **Data Management**
-   - Track testing history with timestamps
-   - View detailed parameter values from previous tests
-   - Export complete reports as CSV files
-
-## 📊 API Endpoints
-
-### `POST /api/predict`
-Predicts water potability based on quality parameters.
-
-**Request Body:**
-```json
-{
-    "ph": 7.5,
-    "Hardness": 250,
-    "Solids": 300,
-    "Chloramines": 2.5,
-    "Sulfate": 150,
-    "Conductivity": 500,
-    "Organic_carbon": 12,
-    "Trihalomethanes": 45,
-    "Turbidity": 2.5
-}
-```
-
-**Response:**
-```json
-{
-    "prediction": 1,
-    "potable": true,
-    "probability": 0.8742,
-    "confidence": 87.42,
-    "message": "Water is POTABLE ✅",
-    "status": "safe",
-    "parameters": { ... }
-}
-```
-
-### `GET /api/status`
-Checks if the API and model are running.
-
-**Response:**
-```json
-{
-    "status": "running",
-    "model_loaded": true,
-    "version": "1.0.0"
-}
-```
-
-### `GET /api/model-info`
-Returns information about the trained model.
-
-## 🎯 Water Quality Parameters
-
-| Parameter | Unit | Safe Range | Description |
-|-----------|------|-----------|-------------|
-| **pH** | - | 6.5 - 8.5 | Acidity/alkalinity balance |
-| **Hardness** | mg/L | 0 - 300 | Dissolved calcium & magnesium |
-| **Solids (TDS)** | mg/L | 0 - 500 | Total dissolved solids |
-| **Chloramines** | mg/L | 0 - 4 | Disinfection chemical level |
-| **Sulfate** | mg/L | 0 - 250 | Sulfur compound concentration |
-| **Conductivity** | μS/cm | 0 - 800 | Electrical conductivity |
-| **Organic Carbon** | ppm | 0 - 20 | Organic matter content |
-| **Trihalomethanes** | μg/L | 0 - 80 | Disinfection byproducts |
-| **Turbidity** | NTU | 0 - 5 | Water clarity/cloudiness |
-
-## 🔄 Workflow
-
-1. **Data Input** → Enter water parameters (manual, sample, or IoT)
-2. **Model Prediction** → Flask API uses Random Forest to predict potability
-3. **Risk Analysis** → System evaluates each parameter against safe ranges
-4. **Recommendations** → Generates specific action steps for improvements
-5. **Health Warnings** → Displays potential health risks for out-of-range values
-6. **Results Display** → Shows verdict, confidence, and detailed breakdown
-7. **Data Storage** → Saves to history for tracking and reporting
-
-## 🤖 Model Information
-
-- **Algorithm**: Random Forest Classifier
-- **Features**: 9 water quality parameters
-- **Training Data**: Comprehensive water potability dataset
-- **Output**: Binary classification (Potable/Not Potable) with probability scores
-- **Performance Metric**: Cross-validation ROC-AUC score for model evaluation
-
-## 📈 Key Improvements
-
-- ✅ Multi-parameter support (9 parameters vs. original 5)
-- ✅ Detailed health risk database with specific warnings
-- ✅ Actionable recommendations with exact numerical guidance
-- ✅ Enhanced UI with color-coded risk levels
-- ✅ Complete parameter history and CSV export
-- ✅ Real-time IoT data integration
-- ✅ Confidence scores for predictions
-
-## 🤝 Contributing
-Contributions are welcome! Feel free to:
-- Submit bug reports or feature requests
-- Fork the repository and submit pull requests
-- Improve model accuracy with new training data
-
-## 📄 License
-This project is open-source and available under the MIT License.
-
-## 👨‍💻 Author
-Sashwat Puri Sachdev
-
-## 📞 Support
-For issues, questions, or suggestions, please open an issue in the repository.
-
+**Sashwat Puri Sachdev**
+B.Tech – Computer Science
+NIIT University
